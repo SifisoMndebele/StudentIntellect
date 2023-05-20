@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1057619796945",
+    "project_id": "stu-intellect",
+    "storage_bucket": "stu-intellect.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1057619796945:android:5f6473dec1d392f94636f0",
+        "android_client_info": {
+          "package_name": "com.ssmnd.studentintellect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1057619796945-02fee5os0mu3k2dirkqmvaqgjmjob65m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVN9e6fc2OZgwHbg4zu01TvNsrIIIjqbo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1057619796945-02fee5os0mu3k2dirkqmvaqgjmjob65m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,56 @@
+<resources>
+    <string-array name="array_theme_modes">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>System default</item>
+    </string-array>
+    <string-array name="opts_theme_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+
+    <string-array name="years_array">
+        <item>Select Year</item>
+        <item>2024</item>
+        <item>2023</item>
+        <item>2022</item>
+        <item>2021</item>
+        <item>2020</item>
+        <item>2019</item>
+        <item>2018</item>
+        <item>2017</item>
+        <item>2016</item>
+        <item>2015</item>
+        <item>2014</item>
+        <item>2013</item>
+    </string-array>
+
+
+    <string-array name="materials_array">
+        <item>Main Exam</item>
+        <item>Supp Exam</item>
+        <item>Special Exam</item>
+        <item>Test</item>
+        <item>Test 1</item>
+        <item>Test 2</item>
+        <item>Test 3</item>
+        <item>Test 4</item>
+        <item>Optional Test</item>
+        <item>Optional Test 1</item>
+        <item>Optional Test 2</item>
+        <item>Special Test</item>
+        <item>Special Test 1</item>
+        <item>Special Test 2</item>
+        <item>Tutorial 1</item>
+        <item>Tutorial 2</item>
+        <item>Tutorial 3</item>
+        <item>Tutorial 4</item>
+        <item>Tutorial 5</item>
+        <item>Tutorial 6</item>
+        <item>Tutorial 7</item>
+        <item>Tutorial 8</item>
+        <item>Tutorial 9</item>
+    </string-array>
+</resources>
