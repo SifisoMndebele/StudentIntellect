@@ -3,23 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_my_materials">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.ssmnd.studentintellect.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_my_materials"
+        android:name="com.ssmnd.studentintellect.activities.main.mymodules.MyModulesFragment"
+        android:label="@string/my_modules_title"
+        tools:layout="@layout/fragment_my_modules"/>
+
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.ssmnd.studentintellect.ui.gallery.GalleryFragment"
-        android:label="string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/action_modules_fragment"
+        android:name="com.ssmnd.studentintellect.activities.main.modules.ModulesFragment"
+        android:label="Modules"
+        tools:layout="@layout/fragment_modules"/>
+    <fragment
+        android:id="@+id/action_profile_fragment"
+        android:name="com.ssmnd.studentintellect.activities.main.profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile"/>
+    <fragment
+        android:id="@+id/action_settings_fragment"
+        android:name="com.ssmnd.studentintellect.activities.main.settings.SettingsFragment"
+        android:label="Settings" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.ssmnd.studentintellect.ui.slideshow.SlideshowFragment"
-        android:label="string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/action_materials_fragment"
+        android:name="com.ssmnd.studentintellect.activities.main.materials.MaterialsFragment"
+        android:label=" "
+        tools:layout="@layout/fragment_materials"/>
+    <fragment
+        android:id="@+id/action_edit_file_fragment"
+        android:name="com.ssmnd.studentintellect.activities.main.materials.files.EditFileFragment"
+        android:label="Add a pdf file"
+        tools:layout="@layout/fragment_edit_file"/>
+    <fragment
+        android:id="@+id/action_edit_folder_fragment"
+        android:name="com.ssmnd.studentintellect.activities.main.materials.folders.EditFolderFragment"
+        android:label="Add a folder"
+        tools:layout="@layout/fragment_edit_folder"/>
 </navigation>

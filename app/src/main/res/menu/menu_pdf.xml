@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/item_export"
+        android:title="@string/export"
+        app:showAsAction="never"
+        android:icon="@drawable/ic_export"
+        tools:ignore="AlwaysShowAction" />
+    <item
+        android:id="@+id/item_share"
+        android:title="@string/share"
+        android:showAsAction="never"
+        android:icon="@drawable/icon_share"
+        tools:ignore="AppCompatResource" />
+    <item
+        android:id="@+id/item_report"
+        android:title="@string/report"
+        android:showAsAction="never"
+        android:icon="@drawable/ic_feedback"
+        tools:ignore="AppCompatResource" />
+
+</menu>

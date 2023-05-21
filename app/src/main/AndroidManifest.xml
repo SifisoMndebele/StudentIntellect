@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
@@ -21,20 +23,25 @@
         android:windowSoftInputMode="stateHidden|adjustPan"
         tools:targetApi="33">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.auth.AuthActivity"
             android:exported="true"
             android:hardwareAccelerated="true"
-            android:theme="@style/Theme.StudentIntellect.NoActionBar">
+            android:theme="@style/Theme.StudentIntellect.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.main.MainActivity"
+            android:exported="false"
+            android:hardwareAccelerated="true"
+            android:theme="@style/Theme.StudentIntellect.Splash"/>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-2845958345291323~2621549784" />
+            android:value="ca-app-pub-2845958345291323~8040609029" />
         <meta-data
             android:name="firebase_performance_logcat_enabled"
             android:value="true" />
