@@ -91,7 +91,7 @@ class LoadingDialog(private val activity: Activity?) {
         if (!text.isNullOrEmpty()) loadingText?.text = text
     }
 
-    fun isDone(text: String? = null, onSuccess : (dialog : Dialog?) -> Unit) {
+    fun showDone(text: String? = null, onSuccess : (dialog : Dialog?) -> Unit) {
         if (activity == null) {
             dialog?.dismiss()
             return
@@ -118,7 +118,7 @@ class LoadingDialog(private val activity: Activity?) {
         },1000)
     }
 
-    fun isError(text: String? = null, onFailure : (dialog : Dialog?) -> Unit) {
+    fun showError(text: String? = null, onFailure : (dialog : Dialog?) -> Unit) {
         if (activity == null) {
             dialog?.dismiss()
             return
@@ -143,7 +143,7 @@ class LoadingDialog(private val activity: Activity?) {
         },3500)
     }
 
-    fun onCancel(onCancel : (dialog : Dialog?) -> Unit) {
+    fun cancel(onCancel : (dialog : Dialog?) -> Unit) {
         cancelAction?.visibility = View.VISIBLE
         cancelAction?.setOnClickListener {
             onCancel(this.dialog)

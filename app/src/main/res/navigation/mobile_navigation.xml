@@ -11,12 +11,6 @@
         android:label="@string/my_modules_title"
         tools:layout="@layout/fragment_my_modules"/>
 
-
-    <fragment
-        android:id="@+id/action_modules_fragment"
-        android:name="com.ssmnd.studentintellect.activities.main.modules.ModulesFragment"
-        android:label="Modules"
-        tools:layout="@layout/fragment_modules"/>
     <fragment
         android:id="@+id/action_profile_fragment"
         android:name="com.ssmnd.studentintellect.activities.main.profile.ProfileFragment"

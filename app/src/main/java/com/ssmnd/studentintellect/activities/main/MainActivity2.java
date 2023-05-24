@@ -1,23 +1,25 @@
 package com.ssmnd.studentintellect.activities.main;
 
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.elevation.SurfaceColors;
 import com.google.android.material.navigation.NavigationView;
@@ -25,7 +27,6 @@ import com.google.android.material.navigation.NavigationView;
 import androidx.annotation.NonNull;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.cardview.widget.CardView;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -35,27 +36,42 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.material.textview.MaterialTextView;
+import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ssmnd.studentintellect.R;
 import com.ssmnd.studentintellect.activities.auth.AuthActivity;
+import com.ssmnd.studentintellect.activities.main.profile.UserDatabase;
 import com.ssmnd.studentintellect.databinding.ActivityMainBinding;
 import com.ssmnd.studentintellect.utils.NetworkObserver;
 import com.ssmnd.studentintellect.utils.Utils;
+import com.ssmnd.studentintellect.utils.Utils2;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity2 extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
-    NavigationView navigationView;
+    private NavigationView navigationView;
+    private NavController navController;
+
+    public UserDatabase userDB = null;
+
+    private final int UPDATE_REQUEST_CODE = 12;
+    public static final String USER_ARG = "user_arg";
+
+    private AppUpdateManager appUpdateManager = null;
+    private FirebaseUser currentUser;
+
+    private InterstitialAd interstitialA = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
         //splashScreen.setKeepOnScreenCondition(() -> true);
         if(/*currentUser != null*/ false){
             startActivity(new Intent(this, AuthActivity.class));
@@ -85,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_my_materials)
                 .setOpenableLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         setNavigationViewMenuClickListener(drawer);
@@ -303,5 +319,55 @@ public class MainActivity extends AppCompatActivity {
         CustomTabsIntent customTabsIntent = builder.build();
 
         customTabsIntent.launchUrl(this, Uri.parse(blackboardUrl));
+    }
+
+
+    public void showFeedbackDialog() {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.menu_layout_feedback);
+        MaterialTextView playStore = dialog.findViewById(R.id.rate_app_on_play_store);
+        MaterialTextView googleForm = dialog.findViewById(R.id.fill_google_form);
+
+        if (Utils2.INSTANCE.isGooglePlayServicesAvailable(this)) {
+            Utils2.INSTANCE.appRatedCheck(this, ()->
+            {
+                playStore.setOnClickListener ( view -> {
+                    Utils2.INSTANCE.tempDisable(view, 1000);
+                    dialog.dismiss();
+                    Utils2.INSTANCE.openPlayStore(this);
+                });
+                return null;
+            }, ()->
+            {
+                playStore.setOnClickListener(view -> {
+                    Utils2.INSTANCE.tempDisable(view, 1000);
+                    dialog.dismiss();
+                    Utils2.INSTANCE.askPlayStoreRatings(this);
+                });
+                return null;
+            });
+        } else {
+            playStore.setVisibility(View.GONE);
+        }
+
+        googleForm.setOnClickListener(view -> {
+            Utils2.INSTANCE.tempDisable(view, 1000);
+            dialog.dismiss();
+
+            String url = "https://docs.google.com/forms/d/e/1FAIpQLSd_oJoesSeXN1pu1oI0cTOU_n6LSE6wwLG-taGB7JD4X3izpQ/viewform?usp=sf_link";
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            builder.setDefaultColorSchemeParams(new CustomTabColorSchemeParams.Builder()
+                    .setToolbarColor(SurfaceColors.SURFACE_1.getColor(this))
+                    .build());
+            builder.setCloseButtonIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_back_arrow));
+            builder.setUrlBarHidingEnabled(true);
+            CustomTabsIntent customTabsIntent = builder.build();
+            customTabsIntent.launchUrl(this, Uri.parse(url));
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 }

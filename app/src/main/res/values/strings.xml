@@ -779,5 +779,10 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="offline_content_may_be_out_of_date">Offline: Content may be out of date</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_modules">ModulesActivity</string>
+    <string name="offline_modules_may_be_out_of_date">Offline: Modules may be out of date</string>
+    <string name="offline_authentication_may_not_be_successful">Offline: Authentication may not be successful</string>
 
 </resources>

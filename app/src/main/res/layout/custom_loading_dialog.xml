@@ -88,6 +88,7 @@
             android:text="@string/an_error_occurred"
             android:layout_margin="8dp"
             android:textSize="18sp"
+            android:textIsSelectable="true"
             android:textColor="#F44336"
             android:fontFamily="@font/bold" />
     </LinearLayout>

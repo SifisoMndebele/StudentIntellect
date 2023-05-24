@@ -147,30 +147,6 @@ object Utils2 {
         }
     }
 
-    // Determine the screen width (less decorations) to use for the ad width.
-    fun Activity.getAdSize(adViewContainer : FrameLayout): AdSize {
-        val width = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val windowMetrics = windowManager.currentWindowMetrics
-            val bounds = windowMetrics.bounds
-            bounds.width()
-        } else @Suppress("DEPRECATION") {
-            val displayMetrics = DisplayMetrics()
-            windowManager.defaultDisplay.getMetrics(displayMetrics)
-            displayMetrics.widthPixels
-        }
-
-        var adWidthPixels = adViewContainer.width
-        // If the ad hasn't been laid out, default to the full screen width.
-        if (adWidthPixels == 0) {
-            adWidthPixels = width
-        }
-
-        val density = resources.displayMetrics.density
-        val adWidth = (adWidthPixels.toFloat() / density).toInt()
-
-        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
-    }
-
     private const val DAYS_UNTIL_PROMPT = 1L//Min number of days
     private const val LAUNCHES_UNTIL_PROMPT = 3//Min number of launches
     private const val RATER_KEY = "rater_key"

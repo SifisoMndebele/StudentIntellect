@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/modules_navigation"
+    app:startDestination="@id/ModulesFragment">
+
+
+    <fragment
+        android:id="@+id/ModulesFragment"
+        android:name="com.ssmnd.studentintellect.activities.modules.ModulesFragment"
+        android:label="Modules"
+        tools:layout="@layout/fragment_modules">
+        <action
+            android:id="@+id/action_ModulesFragment_to_AddModuleFragment"
+            app:destination="@id/AddModuleFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/AddModuleFragment"
+        android:name="com.ssmnd.studentintellect.activities.modules.AddModuleFragment"
+        android:label="Add Your Module"
+        tools:layout="@layout/fragment_add_module">
+    </fragment>
+</navigation>

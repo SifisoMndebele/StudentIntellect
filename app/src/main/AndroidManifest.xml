@@ -23,21 +23,49 @@
         android:windowSoftInputMode="stateHidden|adjustPan"
         tools:targetApi="33">
         <activity
+            android:name=".activities.modules.ModulesActivity"
+            android:exported="false"
+            android:label="@string/title_activity_modules"
+            android:theme="@style/Theme.StudentIntellect" />
+        <activity
             android:name=".activities.auth.AuthActivity"
             android:exported="true"
             android:hardwareAccelerated="true"
-            android:theme="@style/Theme.StudentIntellect.Splash">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.StudentIntellect.Splash"
+            android:windowSoftInputMode="stateUnchanged"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
         </activity>
         <activity
             android:name=".activities.main.MainActivity"
-            android:exported="false"
+            android:exported="true"
             android:hardwareAccelerated="true"
-            android:theme="@style/Theme.StudentIntellect.Splash"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.StudentIntellect.Splash"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            tools:ignore="LockedOrientationActivity">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activities.doc.PdfFileActivity"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:theme="@style/Theme.StudentIntellect.Splash">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
