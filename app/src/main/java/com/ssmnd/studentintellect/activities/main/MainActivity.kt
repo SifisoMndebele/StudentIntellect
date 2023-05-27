@@ -1,5 +1,6 @@
 package com.ssmnd.studentintellect.activities.main
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -8,9 +9,18 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.*
-import android.os.*
-import android.view.*
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
+import android.net.Uri
+import android.os.Build
+import android.os.Bundle
+import android.view.Menu
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -30,22 +40,10 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
-import com.ssmnd.studentintellect.R
-import com.ssmnd.studentintellect.activities.auth.AuthActivity
-import com.ssmnd.studentintellect.activities.main.profile.UserDatabase
-import com.ssmnd.studentintellect.activities.main.mymodules.MyModulesLocalDatabase
-import com.ssmnd.studentintellect.databinding.ActivityMainBinding
-import com.ssmnd.studentintellect.activities.auth.data.AppUser
-import com.ssmnd.studentintellect.utils.Utils2.appRateCheck
-import com.ssmnd.studentintellect.utils.Utils2.appRatedCheck
-import com.ssmnd.studentintellect.utils.Utils2.askPlayStoreRatings
-import com.ssmnd.studentintellect.utils.Utils2.dpToPx
-import com.ssmnd.studentintellect.utils.Utils2.hideKeyboard
-import com.ssmnd.studentintellect.utils.Utils2.isGooglePlayServicesAvailable
-import com.ssmnd.studentintellect.utils.Utils2.openPlayStore
-import com.ssmnd.studentintellect.utils.Utils2.tempDisable
 import com.bumptech.glide.Glide
-import com.google.android.gms.ads.*
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -56,11 +54,24 @@ import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.ktx.Firebase
+import com.ssmnd.studentintellect.R
 import com.ssmnd.studentintellect.activities.ActivitiesMethods
+import com.ssmnd.studentintellect.activities.auth.AppUser
+import com.ssmnd.studentintellect.activities.auth.AuthActivity
+import com.ssmnd.studentintellect.activities.auth.data.User
 import com.ssmnd.studentintellect.activities.modules.ModulesActivity
+import com.ssmnd.studentintellect.databinding.ActivityMainBinding
+import com.ssmnd.studentintellect.utils.Utils2.appRateCheck
+import com.ssmnd.studentintellect.utils.Utils2.appRatedCheck
+import com.ssmnd.studentintellect.utils.Utils2.askPlayStoreRatings
+import com.ssmnd.studentintellect.utils.Utils2.dpToPx
+import com.ssmnd.studentintellect.utils.Utils2.hideKeyboard
+import com.ssmnd.studentintellect.utils.Utils2.isGooglePlayServicesAvailable
+import com.ssmnd.studentintellect.utils.Utils2.openPlayStore
+import com.ssmnd.studentintellect.utils.Utils2.tempDisable
 
 
 class MainActivity : AppCompatActivity() , OnSharedPreferenceChangeListener {
@@ -68,13 +79,13 @@ class MainActivity : AppCompatActivity() , OnSharedPreferenceChangeListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navView: NavigationView
     private lateinit var binding: ActivityMainBinding
-    var userDB: UserDatabase? = null
+    private val firebaseUser = Firebase.auth.currentUser
+
     companion object{
         private const val UPDATE_REQUEST_CODE = 12
         const val USER_ARG = "user_arg"
     }
     private var appUpdateManager : AppUpdateManager? = null
-    private lateinit var currentUser : FirebaseUser
 
     private var interstitialAd : InterstitialAd? = null
     private fun loadInterstitialAd() {
@@ -132,13 +143,14 @@ class MainActivity : AppCompatActivity() , OnSharedPreferenceChangeListener {
                 .setNeutralButton(getString(R.string.cancel)){d,_->
                     d.dismiss()
                 }
-                .setPositiveButton(getString(R.string.logout)){d,_->
-                    d.dismiss()
-                    drawerLayout.close()
-                    MyModulesLocalDatabase(this).doOnSignOut {
-                        startActivity(Intent(this, AuthActivity::class.java))
-                        finishAffinity()
-                    }
+                .setPositiveButton(getString(R.string.logout)){_,_->
+                    AppUser.deleteUser(firebaseUser?.uid!!)
+                    AppUser.setModulesSet(AppUser.getModulesSet().value ?: setOf())
+                    AppUser.deleteModules()
+
+                    Firebase.auth.signOut()
+                    startActivity(Intent(this, AuthActivity::class.java))
+                    finishAffinity()
                 }
                 .show()
             true
@@ -352,7 +364,7 @@ class MainActivity : AppCompatActivity() , OnSharedPreferenceChangeListener {
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
                 runOnUiThread {
-                    userDB?.setIsOnline(true)
+                    AppUser.setIsOnline(true)
                     binding.offlineView.visibility = View.GONE
                 }
             }
@@ -360,7 +372,7 @@ class MainActivity : AppCompatActivity() , OnSharedPreferenceChangeListener {
             override fun onLost(network: Network) {
                 super.onLost(network)
                 runOnUiThread {
-                    userDB?.setIsOnline(false)
+                    AppUser.setIsOnline(false)
                     binding.offlineView.visibility = View.VISIBLE
                 }
             }
@@ -369,6 +381,7 @@ class MainActivity : AppCompatActivity() , OnSharedPreferenceChangeListener {
 
 
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
@@ -377,15 +390,45 @@ class MainActivity : AppCompatActivity() , OnSharedPreferenceChangeListener {
             finish()
             return
         }
-        currentUser = Firebase.auth.currentUser!!
         binding = ActivityMainBinding.inflate(layoutInflater)
+
         val user = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.extras?.getParcelable(USER_ARG, AppUser::class.java)
+            intent.getParcelableExtra(USER_ARG, User::class.java)
         } else {
             @Suppress("DEPRECATION")
-            intent.extras?.getParcelable(USER_ARG)
+            intent.getParcelableExtra(USER_ARG)
         }
-        userDB = UserDatabase(this, user)
+
+        if (user != null) {
+            AppUser(this, user)
+        } else {
+            try {
+                AppUser(this)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+                Firebase.auth.signOut()
+                startActivity(Intent(this, AuthActivity::class.java))
+                finishAffinity()
+                return
+            }
+        }
+
+        /*MaterialAlertDialogBuilder(this)
+            .setTitle("App User")
+            .setMessage(
+                AppUser.getUid().value+"\n"+
+                        AppUser.getEmail().value+"\n"+
+                        AppUser.getNames().value+"\n"+
+                        AppUser.getLastName().value+"\n"+
+                        AppUser.getImageUrl().value+"\n"+
+                        AppUser.getBalance().value+"\n"+
+                        AppUser.getPhone().value+"\n"+
+                        AppUser.getModulesSet().value?.joinToString(" ; ") { it.code }
+            )
+            .show()*/
+
+
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         setupNetworkListener()
@@ -456,14 +499,24 @@ class MainActivity : AppCompatActivity() , OnSharedPreferenceChangeListener {
         /**Back method*/
         onBackPressedMethod()
 
+
         //Profile Header
         val headerView = navView.getHeaderView(0)
-        Glide.with(this)
-            .load(currentUser.photoUrl)
-            .circleCrop()
-            .into(headerView.findViewById(R.id.user_image))
-        headerView.findViewById<TextView>(R.id.user_name).text = currentUser.displayName
-        headerView.findViewById<TextView>(R.id.user_email).text = currentUser.email
+        AppUser.getImageUrl().observe(this) {
+            Glide.with(this)
+                .load(it)
+                .circleCrop()
+                .into(headerView.findViewById(R.id.user_image))
+        }
+        AppUser.getNames().observe(this) { names ->
+            AppUser.getLastName().observe(this) { lastName ->
+                headerView.findViewById<TextView>(R.id.user_name).text =
+                    names.split(" ").map { it[0] }.joinToString("")+" $lastName"
+            }
+        }
+        AppUser.getEmail().observe(this) {
+            headerView.findViewById<TextView>(R.id.user_email).text = it
+        }
         headerView.findViewById<CardView>(R.id.profile_layout).setOnClickListener {
             navController.navigate(R.id.action_profile_fragment)
             drawerLayout.close()

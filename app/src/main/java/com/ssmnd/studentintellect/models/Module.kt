@@ -4,20 +4,23 @@ import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.firebase.Timestamp
-import com.ssmnd.studentintellect.activities.auth.data.UserInfo
-import java.util.Comparator
-import java.util.Objects
 
 data class Module(
-    val id: String = "",
-    val code: String = "",
-    val name: String = "",
-    val timeUpdated: Timestamp = Timestamp.now(),
-    val adder: UserInfo = UserInfo(),
-    @JvmField val isVerified: Boolean = false,
-    val verifier: UserInfo? = null,
+    var id: String = "",
+    var code: String = "",
+    var name: String = "",
+    var timeUpdated: Timestamp = Timestamp.now(),
+    var adderUid: String = "",
+    var adderName: String = "",
+    var adderEmail: String = "",
+    @JvmField var isVerified: Boolean = false,
+    var verifierUid: String? = null,
+    var verifierName: String? = null,
+    var verifierEmail: String? = null,
     @JvmField val isDeleted: Boolean = false,
-    val deleter: UserInfo? = null
+    val deleterUid: String? = null,
+    val deleterName: String? = null,
+    val deleterEmail: String? = null
 ) : Parcelable , Comparable<Module> {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
@@ -29,26 +32,17 @@ data class Module(
             @Suppress("DEPRECATION")
             parcel.readParcelable(Timestamp::class.java.classLoader)!!
         },
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            parcel.readParcelable(UserInfo::class.java.classLoader, UserInfo::class.java)!!
-        } else {
-            @Suppress("DEPRECATION")
-            parcel.readParcelable(UserInfo::class.java.classLoader)!!
-        },
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readString()!!,
         parcel.readByte() != 0.toByte(),
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            parcel.readParcelable(UserInfo::class.java.classLoader, UserInfo::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            parcel.readParcelable(UserInfo::class.java.classLoader)
-        },
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
         parcel.readByte() != 0.toByte(),
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-            parcel.readParcelable(UserInfo::class.java.classLoader, UserInfo::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            parcel.readParcelable(UserInfo::class.java.classLoader)
-        }
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -56,11 +50,17 @@ data class Module(
         parcel.writeString(code)
         parcel.writeString(name)
         parcel.writeParcelable(timeUpdated, flags)
-        parcel.writeParcelable(adder, flags)
+        parcel.writeString(adderUid)
+        parcel.writeString(adderName)
+        parcel.writeString(adderEmail)
         parcel.writeByte(if (isVerified) 1 else 0)
-        parcel.writeParcelable(verifier, flags)
+        parcel.writeString(verifierUid)
+        parcel.writeString(verifierName)
+        parcel.writeString(verifierEmail)
         parcel.writeByte(if (isDeleted) 1 else 0)
-        parcel.writeParcelable(deleter, flags)
+        parcel.writeString(deleterUid)
+        parcel.writeString(deleterName)
+        parcel.writeString(deleterEmail)
     }
 
     override fun describeContents(): Int {

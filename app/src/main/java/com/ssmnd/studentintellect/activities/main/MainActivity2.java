@@ -42,7 +42,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ssmnd.studentintellect.R;
 import com.ssmnd.studentintellect.activities.auth.AuthActivity;
-import com.ssmnd.studentintellect.activities.main.profile.UserDatabase;
 import com.ssmnd.studentintellect.databinding.ActivityMainBinding;
 import com.ssmnd.studentintellect.utils.NetworkObserver;
 import com.ssmnd.studentintellect.utils.Utils;
@@ -56,8 +55,6 @@ public class MainActivity2 extends AppCompatActivity {
     private ActivityMainBinding binding;
     private NavigationView navigationView;
     private NavController navController;
-
-    public UserDatabase userDB = null;
 
     private final int UPDATE_REQUEST_CODE = 12;
     public static final String USER_ARG = "user_arg";

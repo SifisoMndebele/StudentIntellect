@@ -5,8 +5,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import com.google.android.material.elevation.SurfaceColors;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,13 +12,11 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.ssmnd.studentintellect.activities.ActivitiesMethods;
 import com.ssmnd.studentintellect.activities.main.MainActivity;
 import com.ssmnd.studentintellect.databinding.ActivityAuthBinding;
@@ -33,14 +29,13 @@ public class AuthActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityAuthBinding binding;
     public MutableLiveData<Boolean> isOnline = new MutableLiveData<>(true);
-    public static final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /*SplashScreen splashScreen = */SplashScreen.installSplashScreen(this);
         //splashScreen.setKeepOnScreenCondition(() -> true);
 
-        if(currentUser != null){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
             startActivity(new Intent(this, MainActivity.class));
             finish();
             return;
@@ -87,15 +82,6 @@ public class AuthActivity extends AppCompatActivity {
             }
         });
         ActivitiesMethods.initializeAds(this, binding.adView);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(currentUser != null){
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
     }
 
     @Override

@@ -26,6 +26,7 @@ import com.ssmnd.studentintellect.utils.Utils2.tempDisable
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.ssmnd.studentintellect.activities.auth.AppUser
 import com.ssmnd.studentintellect.activities.modules.ModulesActivity
 
 class MyModulesFragment : Fragment() {
@@ -195,9 +196,8 @@ class MyModulesFragment : Fragment() {
 
 
         (activity as MainActivity?)?.apply {
-            val databaseHelper = MyModulesLocalDatabase(this)
 
-            databaseHelper.myModulesList.observe(this) { myModulesList ->
+            AppUser.getModulesSet().observe(this) { myModulesList ->
                 if (myModulesList.isNullOrEmpty()) {
                     binding.welcomeLayout.visibility = View.VISIBLE
                     binding.moduleListLayout.visibility = View.GONE
@@ -207,7 +207,7 @@ class MyModulesFragment : Fragment() {
                     }
                     binding.loadingAnim.visibility = View.GONE
                 } else {
-                    myModulesAdapter = MyModulesAdapter(this, myModulesList, databaseHelper, requestMultiplePermissions)
+                    myModulesAdapter = MyModulesAdapter(this, myModulesList.toList(), requestMultiplePermissions)
                     binding.moduleList.layoutManager = LinearLayoutManager(this)
                     binding.moduleList.setHasFixedSize(true)
                     binding.moduleList.adapter = myModulesAdapter

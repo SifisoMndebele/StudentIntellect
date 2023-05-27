@@ -1,4 +1,4 @@
-package com.ssmnd.studentintellect.activities.auth.data;
+package com.ssmnd.studentintellect.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

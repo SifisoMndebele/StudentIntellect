@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="2dp"
+    android:layout_marginBottom="4dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp"
+    android:gravity="center_vertical"
+    app:cardBackgroundColor="@color/grey_transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:minHeight="64dp">
+
+        <ImageView
+            android:id="@+id/folder_image"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:adjustViewBounds="true"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/select_pdf_file"
+            android:src="@drawable/ic_folder"/>
+
+        <TextView
+            android:id="@+id/folder_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_weight="10"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:layout_marginEnd="8dp"
+            android:paddingVertical="8dp"
+            android:fontFamily="@font/jura_medium"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="end|top">
+            <ImageView
+                android:id="@+id/menu_button"
+                android:visibility="visible"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:paddingVertical="4dp"
+                android:paddingHorizontal="6dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="@string/menu"
+                android:src="@drawable/ic_dots" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

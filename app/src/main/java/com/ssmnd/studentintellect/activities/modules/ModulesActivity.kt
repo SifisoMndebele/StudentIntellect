@@ -25,6 +25,7 @@ class ModulesActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDefaultDisplayHomeAsUpEnabled(true)
 
         val navController = findNavController(R.id.nav_host_fragment_content_modules)
         appBarConfiguration = AppBarConfiguration(navController.graph)
