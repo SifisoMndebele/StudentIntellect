@@ -1,0 +1,9 @@
+pandas
+pypyodbc
+sqlalchemy
+dash_bootstrap_components
+#dash==2.9.3
+dash
+dash-auth
+plotly
+gunicorn
