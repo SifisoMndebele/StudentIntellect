@@ -8,6 +8,8 @@ from plotly import data
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.VAPOR])
 app.config.suppress_callback_exceptions = True
+server = app.server
+app.title = 'Student Intellect'
 
 sidebar = html.Div(
     [
@@ -120,4 +122,4 @@ def on_form_change(store_value):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=False)
