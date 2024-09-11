@@ -1,8 +1,8 @@
-pandas
 pypyodbc
 sqlalchemy
-dash_bootstrap_components
-dash
-dash-auth
-plotly
 gunicorn
+dash
+dash_bootstrap_components
+dash-auth
+pandas
+plotly
