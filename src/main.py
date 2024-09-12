@@ -1,7 +1,10 @@
+from dash import Output, Input, html, callback
+
 from dashboard.ui import dashboard_screen
 from src.app import app
+from src.auth.ui import login_screen
 
-app.layout = dashboard_screen
+app.layout = login_screen
 
 server = app.server
 
