@@ -8,7 +8,7 @@ emailField.addEventListener("focus", ()=> {
 })
 button.addEventListener("click",() => {
     let _email = emailField.value.toString();
-    if (!emailRegExp.test(_email)) {
+    if (!emailRegExp.test(_email)) {a
         alert("Email is not valid.");
         return;
     }

@@ -1,6 +1,5 @@
 {
   "hosting": {
-    "site": "studentintellect",
     "public": "public",
     "ignore": [
       "firebase.json",
